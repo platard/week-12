@@ -13,7 +13,7 @@ function buildBooks(books){
 
     for(const book of books){
         html.push(`
-        <a href="#" class="col-4 mb-3 book">
+        <a href="#" class="col-4 mb-3 book" data-id="${book.id}">
             <img src="${book.image}" alt="${book.title}" class="img-fluid">
         </a>`)
     }
@@ -61,3 +61,17 @@ async function getBook(id){
     `
 
 }
+
+
+$store.addEventListener('click', function(e){
+    e.preventDefault()
+    console.log(e.target)
+    // console.log(e.target.closest('.book'))
+    // console.log(e.target.closest('.book').dataset.id)
+
+    if(e.target.closest('.book')){
+        getBook(e.target.closest('.book').dataset.id)
+    }else if(e.target.classList.contains('back')){
+        getBooks()
+    }
+})
