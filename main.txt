@@ -1,0 +1,23 @@
+// DOM elements
+const $books = document.getElementById('books')
+
+let books = []
+
+
+
+// Function to display all the books
+
+function buildBooks(books){
+
+    const html = []
+
+    for( const book of books){
+        html.push(`
+        <a href="#" class="col-4 mb-3">Book
+            <img src="${book.image}" alt="${book.title}" class="img-fluid">
+        </a>
+        `)
+    }
+
+    return html
+}
