@@ -64,7 +64,7 @@ async function getBook(id){
             data-description="${obj.description}"
             data-image="${obj.image}"
         >+</button>
-        <button class="remove btn btn-danger">-</button>
+        <button class="remove btn btn-danger" data-id="${obj.id}">-</button>
         
     </div>
     `
@@ -91,8 +91,17 @@ $seussology.addEventListener('click', function(e){
             localStorage.setItem('save', JSON.stringify(save))
             buildWishList()
         }
-    }else if(e.target.classList.contains('save')){
-        
+    }else if(e.target.classList.contains('remove')){
+        console.log(e.target.dataset.id)
+        const index = save.findIndex( book => book.id === e.target.dataset.id )
+        console.log(index)
+        if(index >= 0){
+            save.splice(index, 1)
+            localStorage.setItem('save',JSON.stringify(save))
+            buildWishList()
+
+        }
+
     }
 
 
