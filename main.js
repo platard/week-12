@@ -1,8 +1,10 @@
 // DOM elements
 const $books = document.getElementById('books')
 const $seussology = document.getElementById('seussology')
+const $wishList = document.getElementById('wishList')
 
-let books = []
+// let books = []
+let save = []
 
 
 
@@ -39,6 +41,7 @@ async function getBooks(){
 }
 
 getBooks()
+buildWishList()
 
 
 // Display details
@@ -54,6 +57,15 @@ async function getBook(id){
     <div class="col-6">
         <h1>${obj.title}</h1>
         <p>${obj.description}</p>
+        <button class="back btn btn-secondary">Back</button>
+        <button class="save btn btn-primary"
+            data-id="${obj.id}"
+            data-title="${obj.title}"
+            data-description="${obj.description}"
+            data-image="${obj.image}"
+        >+</button>
+        <button class="remove btn btn-danger">-</button>
+        
     </div>
     `
 
@@ -63,8 +75,37 @@ async function getBook(id){
 $seussology.addEventListener('click', function(e){
     e.preventDefault()
 
-    console.log(e.target.closest('.book'))
-    getBook(e.target.closest('.book').dataset.id)
+    if(e.target.closest('.book')){
+        getBook(e.target.closest('.book').dataset.id)
+    }else if(e.target.classList.contains('back')){
+        getBooks()
+    }else if(e.target.classList.contains('save')){
+        if(!save.find(book => book.id === e.target.dataset.id)){
+            save.push({
+                id: e.target.dataset.id,
+                title: e.target.dataset.title,
+                description: e.target.dataset.description,
+                image: e.target.dataset.image
+            })
+            
+            localStorage.setItem('save', JSON.stringify(save))
+            buildWishList()
+        }
+    }else if(e.target.classList.contains('save')){
+        
+    }
 
 
 })
+
+
+function buildWishList(){
+    const ls = JSON.parse(localStorage.getItem('save'))
+
+    if(ls){
+        save = ls
+    }
+    const html = buildBooks(save)
+    $wishList.innerHTML = html.join('')
+}
+
